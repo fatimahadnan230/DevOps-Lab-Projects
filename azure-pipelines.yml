@@ -5,18 +5,14 @@ pool:
   name: 'Default'
 
 steps:
-# Step 1: Echo to confirm the pipeline is starting (optional)
-- script: echo "Starting deployment to Azure App Service..."
+- script: echo "Starting deployment for Fatimah's DevOps Lab..."
   displayName: 'Initialization'
 
-# Step 2: The actual Deployment Task
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
-    # Use the name of the service connection you just verified/saved
-    azureSubscription: 'LabConnectionFinal'  
+    azureSubscription: 'LabConnectionFinal'  # Ensure this name is correct
     appType: 'webAppLinux'
-    # CHANGE THIS to your actual Web App name from the Azure Portal
     WebAppName: 'fatimah-devops-lab' 
-    # This looks for the .war file in your repository to deploy
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.war'
+    # FIX: We are now pointing to the folder itself, not a missing .war file
+    packageForLinux: '$(System.DefaultWorkingDirectory)'
