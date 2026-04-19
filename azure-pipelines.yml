@@ -5,12 +5,19 @@ pool:
   name: 'Default'
 
 steps:
+# 1. Compile the Java code (Standard for Lab experiments)
+- script: |
+    javac test.java
+    jar cvf sample.war index.html test.class
+  displayName: 'Compile and Package Java'
+
+# 2. Deploy the generated .war file
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
     azureSubscription: 'LabConnectionFinal'
     appType: 'webAppLinux'
     WebAppName: 'fatimah-devops-lab'
-    packageForLinux: '$(System.DefaultWorkingDirectory)'
-    # This tells Azure to use the index.html as the main entry point
-    RuntimeStack: 'STATICSITE|1.0'
+    # Now we are targeting the actual package we just built
+    packageForLinux: '$(System.DefaultWorkingDirectory)/sample.war'
+    RuntimeStack: 'JAVA|17-java17' # Adjust version if you use Java 8 or 11
