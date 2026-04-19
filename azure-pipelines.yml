@@ -6,15 +6,11 @@ pool:
 
 steps:
 - script: |
-    echo "--- Compiling Java ---"
+    echo "--- Compiling and Forcing ROOT status ---"
     javac test.java
-    
-    echo "--- Creating Package ---"
-    # This command creates the war file with index.html 
-    # and any .class files that were just created.
-    jar cvf sample.war index.html *.class
-  displayName: 'Compile and Package Java'
-  continueOnError: true 
+    # We rename the file to ROOT.war so Azure makes it the homepage
+    jar cvf ROOT.war index.html *.class
+  displayName: 'Compile and Package as ROOT'
 
 - task: AzureRmWebAppDeployment@4
   inputs:
@@ -22,4 +18,5 @@ steps:
     azureSubscription: 'LabConnectionFinal'
     appType: 'webAppLinux'
     WebAppName: 'fatimah-devops-lab'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/sample.war'
+    # Use the new ROOT name here
+    packageForLinux: '$(System.DefaultWorkingDirectory)/ROOT.war'
