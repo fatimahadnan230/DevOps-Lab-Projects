@@ -1,8 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - main
 
@@ -10,10 +5,18 @@ pool:
   name: 'Default'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+# Step 1: Echo to confirm the pipeline is starting (optional)
+- script: echo "Starting deployment to Azure App Service..."
+  displayName: 'Initialization'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+# Step 2: The actual Deployment Task
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    # Use the name of the service connection you just verified/saved
+    azureSubscription: 'LabConnectionFinal'  
+    appType: 'webAppLinux'
+    # CHANGE THIS to your actual Web App name from the Azure Portal
+    WebAppName: 'fatimah-devops-lab' 
+    # This looks for the .war file in your repository to deploy
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.war'
