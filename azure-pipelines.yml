@@ -5,14 +5,12 @@ pool:
   name: 'Default'
 
 steps:
-- script: echo "Starting deployment for Fatimah's DevOps Lab..."
-  displayName: 'Initialization'
-
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
-    azureSubscription: 'LabConnectionFinal'  # Ensure this name is correct
+    azureSubscription: 'LabConnectionFinal'
     appType: 'webAppLinux'
-    WebAppName: 'fatimah-devops-lab' 
-    # FIX: We are now pointing to the folder itself, not a missing .war file
+    WebAppName: 'fatimah-devops-lab'
     packageForLinux: '$(System.DefaultWorkingDirectory)'
+    # This tells Azure to use the index.html as the main entry point
+    RuntimeStack: 'STATICSITE|1.0'
